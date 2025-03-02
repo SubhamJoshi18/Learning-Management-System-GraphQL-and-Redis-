@@ -2,19 +2,19 @@ import { BadGatewayError } from "../exceptions";
 import { ICreateOrganization } from "../interfaces/auth/types";
 import crypto from 'node:crypto'
 import AdminRepository from "../repository/admin.repo";
+import AuthRepository from "../repository/auth.repo";
 
 
 
 class AdminServices {
 
 
-    private adminRepository : AdminRepository
+    private adminRepository : AdminRepository =new AdminRepository ()
+    private authRepository : AuthRepository = new AuthRepository()
 
-    constructor(){
-        this.adminRepository = new AdminRepository()
-    }
 
-        public async createOrganization(parsePayload : ICreateOrganization) {
+
+        public async createOrganization(parsePayload : ICreateOrganization,userId : string) {
             
             const { organizationName, type } = parsePayload
 
@@ -23,9 +23,14 @@ class AdminServices {
             if(checkOrganizationName) throw new BadGatewayError(`There is already an Organization Name with ${organizationName}`);
 
 
+            const checkUserExists = await this.authRepository.findOneId(userId)
+            
+            if(!checkUserExists) throw new BadGatewayError(`The User Does not Exists on the System`);
+        
             const payloadOrg = {
                 organizationName,
                 type,
+                organizationCreatedBy : userId
             } as any
 
             const payloadString = JSON.stringify(payloadOrg);
@@ -43,4 +48,4 @@ class AdminServices {
 
 }
 
-export default AdminServices
+export default new AdminServices()

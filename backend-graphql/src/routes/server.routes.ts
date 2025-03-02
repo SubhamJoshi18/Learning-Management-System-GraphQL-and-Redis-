@@ -4,12 +4,13 @@ import { Application } from "express"
 import { globalErrorHandler, notFoundError } from "../handlers/error.handler"
 import healthRouter from "./health.route"
 import authRouter from "./auth.route"
+import adminRouter from "./admin.route"
 
 
 const serverRouter  = async (app:Application,graphQL : ApolloServer<BaseContext>) => {
         await graphQL.start()
         app.use('/graphql',expressMiddleware(graphQL) as any)
-        app.use('/api',[healthRouter,authRouter])
+        app.use('/api',[healthRouter,authRouter,adminRouter])
         app.use('*',notFoundError as any)
         app.use(globalErrorHandler as any)
 }

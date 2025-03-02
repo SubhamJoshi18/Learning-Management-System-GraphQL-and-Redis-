@@ -7,19 +7,14 @@ import { sendApiResponse } from "../utils/response.utils"
 class AdminController {
 
 
-    private adminServices : AdminServices
-    
-    constructor(){
-        this.adminServices = new AdminServices()
-    }
-
-
+   
     public async createOrganization(req:Request,res:Response,next:NextFunction) {
         try{
             const content = req.body
+            const userId = req.user._id
             const parseResult : ICreateOrganization = await createOrganizationSchema.parseAsync(content)
-            const graphlQlResponse = await this.adminServices.createOrganization(parseResult)
-            return graphlQlResponse
+            const apiResponse = await AdminServices.createOrganization(parseResult,userId)
+            return sendApiResponse(res,apiResponse,`Organization have been Created`)
         }catch(err){
             next(err)
         }
