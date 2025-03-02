@@ -4,9 +4,6 @@ import { ApolloServer,BaseContext } from "@apollo/server";
 import { serverMiddleware } from "./middlewares/server.middleware";
 import { serverRouter } from "./routes/server.routes";
 import { connectMongo } from "./database/connect";
-import mongoose from "mongoose";
-
-
 
 
 

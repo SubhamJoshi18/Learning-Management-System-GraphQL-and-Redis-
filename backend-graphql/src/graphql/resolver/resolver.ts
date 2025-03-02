@@ -6,7 +6,7 @@ const graphQLResolver = {
 
         hello : () => 'Hello World'
         
-    }
+    },
 }
 
 
