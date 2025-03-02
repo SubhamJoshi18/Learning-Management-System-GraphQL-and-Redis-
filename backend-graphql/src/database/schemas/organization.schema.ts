@@ -23,6 +23,17 @@ const organizationSchema = new mongoose.Schema({
         type: Number,
         default : 0
     },
+
+    organizationCreatedBy : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'User'
+    },
+
+    organizationStatus : {
+        type : String,
+        enum : ['Open','Closed'],
+        default : 'Open'
+    }
 })
 
 

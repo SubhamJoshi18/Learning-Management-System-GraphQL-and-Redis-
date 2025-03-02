@@ -51,6 +51,11 @@ class AuthRepository {
     async saveData(data:any | object){
         return await User.create({...data})
     }
+
+
+    async findAllUser(){
+        return await User.find({})
+    }
  
 }
 

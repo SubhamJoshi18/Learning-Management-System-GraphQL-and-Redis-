@@ -10,6 +10,7 @@ import { generateRandomUuid } from "../utils/transformData.utils"
 import TokenRepository from "../repository/token.repo"
 import EmailHelper from "../helpers/smtp.helper"
 import { generateHtmlContent,subject } from "../constants/email.constant"
+import e from "express"
 
 
 class AuthService {
@@ -24,6 +25,7 @@ class AuthService {
 
 
     async registerServices  (validBody : Required<IRegisterBody>) : Promise<any> {
+        let userRole = 'user'
         const {email , username, password ,phoneNumber} = validBody
         
         const promiseArray = await Promise.allSettled([this.authRepository.findOneEmail(email) , this.authRepository.findOneUsername(username)])
@@ -34,6 +36,13 @@ class AuthService {
             const failedAttributes = successPromise.map((item:any) => item.value)
             throw new BadGatewayError(`The Following Credentials are already created,${[...failedAttributes]} Please Try again`)
         }
+
+        const emptyCollection = await this.authRepository.findAllUser()
+
+        if(Array.isArray(emptyCollection) && emptyCollection.length === 0) {
+            userRole = 'admin'
+        }
+        
 
 
         const isRepeatedPhoneNumber = await this.authRepository.findOnePhoneNumber(phoneNumber)
