@@ -17,7 +17,7 @@ const UserProfileSchema = new mongoose.Schema({
         default : ''
     },
 
-    isRider : {
+    isAdmin : {
         type : Boolean,
         default : false
     },

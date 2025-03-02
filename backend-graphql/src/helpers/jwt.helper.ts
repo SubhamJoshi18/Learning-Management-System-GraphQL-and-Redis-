@@ -34,7 +34,7 @@ class JsonWebTokenHelper {
         const payload = JSON.parse(JSON.stringify(payloadBody))
 
         const options : jwt.SignOptions= {
-            issuer : 'Uber Shubham',
+            issuer : 'SchoolWorksPro Shubham',
             expiresIn : serviceType.startsWith("r") ?  '24h' : '1h',
         }
 
